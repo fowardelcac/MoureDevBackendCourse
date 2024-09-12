@@ -8,4 +8,6 @@ async def root():
 
 @app.get("/url")
 async def root():
-    return {"url": "www.google.com!"}
+    return {"url": "www.google.com"}
+
+
