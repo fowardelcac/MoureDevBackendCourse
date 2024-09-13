@@ -18,7 +18,7 @@ user_instance = [
 ]
 
 
-@app.get("/users")
+@app.get("/users/")
 async def users():
     return user_instance
 
@@ -53,3 +53,31 @@ def searcher_int(id: int):
 - query -> params que pueden no ser necesarios
 
 """
+
+
+@app.post("/user/")
+async def user(user: Users):
+    user_instance.append(user)
+
+
+@app.put("/user/")
+async def user(user: Users):
+    found = False
+    for index, i in enumerate(user_instance):
+        if i.id == user.id:
+            user_instance[index] = user
+            found = True
+    if not found:
+        return {"error": "there is an error dude"}
+
+
+#http://localhost:8000/users/1
+@app.delete("/user/{id}")
+async def user(id: int):
+    found = False
+    for index, i in enumerate(user_instance):
+        if i.id == id:
+            del user_instance[index]
+            found = True
+    if not found:
+        return {"error": "there is an error dude"}
