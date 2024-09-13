@@ -46,3 +46,10 @@ def searcher_int(id: int):
         raise HTTPException(status_code=404, detail="User not found")
 
     return user
+
+
+"""
+- path -> params oblig    
+- query -> params que pueden no ser necesarios
+
+"""
