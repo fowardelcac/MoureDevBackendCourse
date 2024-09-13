@@ -37,15 +37,7 @@ async def user_id_v2(id: int):
 
 
 def searcher_int(id: int):
-    # Use list comprehension to find the user with the given id
-
-    user = next((u for u in user_instance if u.id == id), None)
-
-    # If user is not found, raise a 404 error
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return user
+    return any(user.id == id for user in user_instance)
 
 
 """
@@ -55,9 +47,13 @@ def searcher_int(id: int):
 """
 
 
-@app.post("/user/")
+@app.post("/user/", status_code=201)
 async def user(user: Users):
-    user_instance.append(user)
+    if not searcher_int(user.id):
+        user_instance.append(user)
+        return user
+    else:
+        raise HTTPException(status_code=204, detail="ya existe")
 
 
 @app.put("/user/")
@@ -71,7 +67,7 @@ async def user(user: Users):
         return {"error": "there is an error dude"}
 
 
-#http://localhost:8000/users/1
+# http://localhost:8000/users/1
 @app.delete("/user/{id}")
 async def user(id: int):
     found = False
